@@ -2,7 +2,7 @@ import random
 
 from aiogram.types import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram import types, Dispatcher
-
+from keyboards.ckient_kb import start_markup
 from config import dp, bot
 
 
@@ -14,9 +14,9 @@ async def sendphoto(msg):
     await bot.send_photo(msg.from_user.id, photo)
 
 
-@dp.message_handler(commands=["skip"])
+@dp.message_handler(commands=["start"])
 async def start_command(message: types.Message):
-    await message.reply(f"Hello {message.from_user.full_name}, kak ")
+    await message.reply(f"Hello {message.from_user.full_name}", reply_markup=start_markup)
 
 @dp.message_handler(commands=["dice"])
 async def start_command(message: types.Message):
@@ -43,7 +43,7 @@ async def quiz_1(message: types.Message):
     button_3 = InlineKeyboardButton("Third", callback_data="question_3")
     markup.add(button_1, button_2, button_3)
 
-    await bot.send_message(message.from_user.id, "Choose question", reply_markup=markup)
+    await bot.send_message(message.chat.id, "Choose question", reply_markup=markup)
     # question = "Choose question ???"
     # answer = [
     #     "1", "2", "3"

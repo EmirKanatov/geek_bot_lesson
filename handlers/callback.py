@@ -27,7 +27,6 @@ polls = {
 
 async def quiz_2(call: types.CallbackQuery):
     result = int(call.data.split("_")[1])
-    print(result)
     markup = InlineKeyboardMarkup()
     button_1 = InlineKeyboardButton("First question", callback_data="question_1")
     button_2 = InlineKeyboardButton("Second question", callback_data="question_2")
