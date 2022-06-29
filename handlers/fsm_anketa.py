@@ -24,26 +24,25 @@ async def fsm_start(message: types.Message):
         await message.reply("Пиши в личку!!!")
 
 
-
 async def load_photo(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data["photo"] = message.photo[0].file_id
     await FSMAdmin.next()
-    await message.answer("Ваше имя ")
+    await message.answer("Ваше имя ", reply_markup=cancel_markup)
 
 
 async def load_name(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data["name"] = message.text
     await FSMAdmin.next()
-    await message.answer("Ваша фамилия")
+    await message.answer("Ваша фамилия", reply_markup=cancel_markup)
 
 
 async def load_surname(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data["surname"] = message.text
     await FSMAdmin.next()
-    await message.answer("Ваш год рождения")
+    await message.answer("Ваш год рождения", reply_markup=cancel_markup)
 
 
 async def load_age(message: types.Message, state: FSMContext):
@@ -51,7 +50,7 @@ async def load_age(message: types.Message, state: FSMContext):
         async with state.proxy() as data:
             data["age"] = 2022 - int(message.text)
         await FSMAdmin.next()
-        await message.answer("Город или село в котором живете?")
+        await message.answer("Город или село в котором живете?", reply_markup=cancel_markup)
     except:
         await message.answer("Введите число!!!")
 
@@ -63,7 +62,8 @@ async def load_region(message: types.Message, state: FSMContext):
                              caption=f"Имя: {data['name']}\n"
                                      f"Фамилия: {data['surname']}\n"
                                      f"Возраст: {data['age']}\n"
-                                     f"Регион: {data['region']}\n")
+                                     f"Регион: {data['region']}\n"
+                                     f"Ник: @{message.from_user.username}")
     await state.finish()
 
 
