@@ -1,11 +1,13 @@
 import random
 
-from aiogram.types import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram import types, Dispatcher
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
+
+from config import dp, bot
 from database.bot_db import sql_command_random
 from keyboards.ckient_kb import start_markup
-from config import dp, bot
+from pars import movies
 
 
 @dp.message_handler(commands=["meme"])
@@ -19,6 +21,7 @@ async def sendphoto(msg):
 @dp.message_handler(commands=["start"])
 async def start_command(message: types.Message):
     await message.reply(f"Hello {message.from_user.full_name}", reply_markup=start_markup)
+
 
 @dp.message_handler(commands=["dice"])
 async def start_command(message: types.Message):
@@ -62,8 +65,21 @@ async def quiz_1(message: types.Message):
     #     reply_markup=markup,
     # )
 
+
 async def show_random_user(message: types.Message):
     await sql_command_random(message)
+
+
+async def parser_movies(message: types.Message):
+    data = movies.parse()
+    for movie in data:
+        desc = movie["desc"].split(',')
+        await bot.send_message(message.from_user.id, f"{movie['title']}\n"
+            f"Год: {desc[0]}\n"
+            f"Город: {desc[1]}\n"
+            f"Жанр: {desc[2]}\n"
+            f"{movie['link']}"
+        )
 
 
 def register_handler_client(dp: Dispatcher):
@@ -71,3 +87,4 @@ def register_handler_client(dp: Dispatcher):
     dp.register_message_handler(sendphoto, commands=["meme"])
     dp.register_message_handler(quiz_1, commands=["quiz"])
     dp.register_message_handler(show_random_user, commands=["random"])
+    dp.register_message_handler(parser_movies, commands=["film"])
