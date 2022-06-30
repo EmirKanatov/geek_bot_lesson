@@ -2,6 +2,8 @@ import random
 
 from aiogram.types import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram import types, Dispatcher
+
+from database.bot_db import sql_command_random
 from keyboards.ckient_kb import start_markup
 from config import dp, bot
 
@@ -60,8 +62,12 @@ async def quiz_1(message: types.Message):
     #     reply_markup=markup,
     # )
 
+async def show_random_user(message: types.Message):
+    await sql_command_random(message)
+
 
 def register_handler_client(dp: Dispatcher):
     dp.register_message_handler(start_command, commands=["skip"])
     dp.register_message_handler(sendphoto, commands=["meme"])
     dp.register_message_handler(quiz_1, commands=["quiz"])
+    dp.register_message_handler(show_random_user, commands=["random"])
