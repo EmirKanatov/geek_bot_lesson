@@ -22,6 +22,16 @@ async def echo(message: types.Message):
         else:
             await bot.send_message(message.chat.id, "Вы не являетесь администратором")
 
+    if message.text.startswith("seconds"):
+        seconds = int(message.text.replace("seconds ", ""))
+        if seconds <= 359999:
+            h = seconds // 3600
+            m = seconds // 60 % 60
+            s = seconds % 60
+            await bot.send_message(message.chat.id, f"{h}:{m}:{s}")
+        else:
+            await bot.send_message(message.chat.id, "less than 359999")
+
 
 def register_handlers_extra(dp: Dispatcher):
     dp.register_message_handler(echo)
