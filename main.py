@@ -4,7 +4,7 @@ from aiogram.utils import executor
 
 from handlers import notification, fsm_anketa, client, callback, extra, admin
 from fsm import FSMAdmin
-
+from decouple import config
 from config import dp, bot, URL
 import logging
 from database.bot_db import sql_create
@@ -40,5 +40,5 @@ if __name__ == "__main__":
         on_shutdown=on_shutdown,
         skip_updates=True,
         host="0.0.0.0",
-        port=5000
+        port=config("PORT", cast=int)
     )
